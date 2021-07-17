@@ -72,7 +72,7 @@ class User extends PureComponent {
   render() {
     return (
       <Page inner>
-        <Filter {...this.filterProps} />
+        {/* <Filter {...this.filterProps} /> */}
         <List {...this.listProps} />
       </Page>
     )

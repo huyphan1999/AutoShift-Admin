@@ -22,12 +22,12 @@ const goDashboard = () => {
 }
 
 const routeList = [
-  {
-    id: '1',
-    icon: 'dashboard',
-    name: 'Dashboard',
-    route: '/dashboard',
-  },
+  // {
+  //   id: '1',
+  //   icon: 'dashboard',
+  //   name: 'Dashboard',
+  //   route: '/dashboard',
+  // },
   {
     id: '2',
     breadcrumbParentId: '1',
