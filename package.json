@@ -91,9 +91,7 @@
     },
     "sourceLocale": "en",
     "locales": [
-      "en",
-      "zh",
-      "pt-br"
+      "en"
     ],
     "catalogs": [
       {
