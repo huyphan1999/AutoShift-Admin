@@ -33,7 +33,7 @@ class User extends PureComponent {
     const { list, pagination, selectedRowKeys } = salary
 
     return {
-      dataSource: list,
+      dataSource: [],
       loading: loading.effects['salary/query'],
       pagination,
       onChange: (page) => {
@@ -72,7 +72,7 @@ class User extends PureComponent {
   render() {
     return (
       <Page inner>
-        {/* <Filter {...this.filterProps} /> */}
+        <Filter {...this.filterProps} />
         <List {...this.listProps} />
       </Page>
     )

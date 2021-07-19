@@ -66,14 +66,14 @@ export default modelExtend(pageModel, {
       }
     },
 
-    *multiDelete({ payload }, { call, put }) {
-      const data = yield call(removeUserList, payload)
-      if (data.success) {
-        yield put({ type: 'updateState', payload: { selectedRowKeys: [] } })
-      } else {
-        throw data
-      }
-    },
+    // *multiDelete({ payload }, { call, put }) {
+    //   const data = yield call(removeUserList, payload)
+    //   if (data.success) {
+    //     yield put({ type: 'updateState', payload: { selectedRowKeys: [] } })
+    //   } else {
+    //     throw data
+    //   }
+    // },
 
     *create({ payload }, { call, put }) {
       const data = yield call(createUser, payload)

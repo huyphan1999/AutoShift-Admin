@@ -13,6 +13,8 @@ export async function postRequest(url, data) {
 
   console.log('post Request res', json)
 
+  // console.log(hi)
+
   if (json.error_code == 0) {
     return Promise.resolve(json)
   } else {

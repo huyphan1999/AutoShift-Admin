@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { FilterItem } from 'components'
-import { Trans } from "@lingui/macro"
-import { t } from "@lingui/macro"
+import { Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { Button, Row, Col, DatePicker, Form, Input, Cascader } from 'antd'
-import city from 'utils/city'
+
+import locale from 'antd/es/date-picker/locale/en_GB'
+import debounce from 'lodash/debounce'
 
 const { Search } = Input
 const { RangePicker } = DatePicker
@@ -26,13 +28,15 @@ const TwoColProps = {
 class Filter extends Component {
   formRef = React.createRef()
 
-  handleFields = fields => {
-    const { createTime } = fields
-    if (createTime && createTime.length) {
-      fields.createTime = [
-        moment(createTime[0]).format('YYYY-MM-DD'),
-        moment(createTime[1]).format('YYYY-MM-DD'),
-      ]
+  handleFields = (fields) => {
+    for (let item in fields) {
+      if ({}.hasOwnProperty.call(fields, item)) {
+        if (moment.isMoment(fields[item])) {
+          fields.start_date = fields[item].startOf('week').format('YYYY-MM-DD')
+          fields.end_date = fields[item].endOf('week').format('YYYY-MM-DD')
+          fields[item] = undefined
+        }
+      }
     }
     return fields
   }
@@ -60,11 +64,23 @@ class Filter extends Component {
   }
   handleChange = (key, values) => {
     const { onFilterChange } = this.props
+
+    console.log('hande change', values)
+    console.log(hi)
+
     let fields = this.formRef.current.getFieldsValue()
+
     fields[key] = values
     fields = this.handleFields(fields)
+
     onFilterChange(fields)
   }
+
+  normalized = (value) => {
+    return value?.format('YYYY-MM-DD')
+  }
+
+  _deboucehandleChange = debounce(this.handleChange, 500)
 
   render() {
     const { onAdd, filter } = this.props
@@ -79,7 +95,12 @@ class Filter extends Component {
     }
 
     return (
-      <Form ref={this.formRef} name="control-ref" initialValues={{ name, address, createTime: initialCreateTime }}>
+      <Form
+        onFieldsChange={this._deboucehandleChange}
+        ref={this.formRef}
+        name="control-ref"
+        initialValues={{}}
+      >
         <Row gutter={24}>
           <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
             <Form.Item name="name">
@@ -94,52 +115,28 @@ class Filter extends Component {
             xl={{ span: 4 }}
             md={{ span: 8 }}
             id="addressCascader"
-          >
-            <Form.Item name="address">
-              <Cascader
-                style={{ width: '100%' }}
-                options={city}
-                placeholder={t`Please pick an address`}
-              />
-            </Form.Item>
-          </Col>
+          ></Col>
           <Col
             {...ColProps}
             xl={{ span: 6 }}
             md={{ span: 8 }}
             sm={{ span: 12 }}
             id="createTimeRangePicker"
-          >
-            <FilterItem label={t`CreateTime`}>
-              <Form.Item name="createTime">
-                <RangePicker
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
-            </FilterItem>
-          </Col>
+          ></Col>
           <Col
             {...TwoColProps}
             xl={{ span: 10 }}
             md={{ span: 24 }}
             sm={{ span: 24 }}
           >
-            <Row type="flex" align="middle" justify="space-between">
-              <div>
-                <Button
-                  type="primary" htmlType="submit"
-                  className="margin-right"
-                  onClick={this.handleSubmit}
-                >
-                  <Trans>Search</Trans>
-                </Button>
-                <Button onClick={this.handleReset}>
-                  <Trans>Reset</Trans>
-                </Button>
-              </div>
-              <Button type="ghost" onClick={onAdd}>
-                <Trans>Create</Trans>
-              </Button>
+            <Row type="flex" align="middle" justify="end">
+              <Form.Item normalize={this.normalized} name="month_date">
+                <DatePicker
+                  locale={locale}
+                  style={{ width: '100%' }}
+                  picker="month"
+                />
+              </Form.Item>
             </Row>
           </Col>
         </Row>

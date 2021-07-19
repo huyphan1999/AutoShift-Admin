@@ -16,6 +16,12 @@ import {
   SettingOutlined,
   HistoryOutlined,
   InsertRowAboveOutlined,
+  LoginOutlined,
+  LogoutOutlined,
+  FullscreenOutlined,
+  WarningOutlined,
+  SelectOutlined,
+  ExclamationCircleOutlined,
 } from '@ant-design/icons'
 
 export default {
@@ -36,4 +42,7 @@ export default {
   'time-management': <HistoryOutlined />,
   config: <SettingOutlined />,
   timesheet: <InsertRowAboveOutlined />,
+  in_time: <SelectOutlined />,
+  out_time: <WarningOutlined />,
+  noCheck: <ExclamationCircleOutlined />,
 }

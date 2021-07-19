@@ -4,6 +4,7 @@ import moment from 'moment'
 import 'moment/locale/zh-cn'
 import store from 'store'
 import { i18n } from './config'
+import { Color } from './theme'
 
 export classnames from 'classnames'
 export config from './config'
@@ -257,4 +258,20 @@ export function number_format(
     return s[0]
   }
   return s.join(dec)
+}
+
+export function mapSelectOption(data) {
+  return data.map((item) => ({
+    ...item,
+    label: item.name,
+    value: item.id || item._id,
+  }))
+}
+
+export function mapSelectData(item) {
+  return {
+    ...item,
+    label: item.name,
+    value: item.id || item._id,
+  }
 }

@@ -158,7 +158,7 @@ class User extends PureComponent {
 
     return (
       <Page inner>
-        {/* <Filter {...this.filterProps} /> */}
+        <Filter {...this.filterProps} />
         {selectedRowKeys.length > 0 && (
           <Row style={{ marginBottom: 24, textAlign: 'right', fontSize: 13 }}>
             <Col>

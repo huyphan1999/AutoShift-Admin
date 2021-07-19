@@ -14,9 +14,11 @@ import {
   DatePicker,
   Select,
 } from 'antd'
-import { Trans } from '@lingui/macro'
-import city from 'utils/city'
+import { mapSelectData, mapSelectOption } from 'utils'
 import { t } from '@lingui/macro'
+import moment from 'moment'
+import { postRequest, getRequest } from 'services'
+import configs from 'server'
 
 const FormItem = Form.Item
 
@@ -24,6 +26,8 @@ const formItemLayout = {}
 
 class UserModal extends PureComponent {
   formRef = React.createRef()
+
+  state = { depList: [] }
 
   handleOk = () => {
     const { item = {}, onOk } = this.props
@@ -43,8 +47,20 @@ class UserModal extends PureComponent {
       })
   }
 
+  _onFocus = async () => {
+    try {
+      const res = await getRequest(`${configs.apiUrl}dep/list`)
+      if (res?.data) {
+        this.setState({ depList: mapSelectOption(res.data) })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   render() {
     const { item = {}, onOk, form, ...modalProps } = this.props
+    console.log('Modal', item)
 
     return (
       <Modal {...modalProps} onOk={this.handleOk}>
@@ -53,7 +69,8 @@ class UserModal extends PureComponent {
           name="control-ref"
           initialValues={{
             ...item,
-            address: item.address && item.address.split(' '),
+            birth: moment(item?.birth),
+            dep: item?.dep ? mapSelectData(item?.dep) : undefined,
           }}
           layout="vertical"
         >
@@ -72,7 +89,7 @@ class UserModal extends PureComponent {
             </Col>
             <Col span={12}>
               <FormItem
-                name="phone"
+                name="phone_number"
                 rules={[
                   {
                     required: true,
@@ -110,10 +127,10 @@ class UserModal extends PureComponent {
                 {...formItemLayout}
               >
                 <Radio.Group>
-                  <Radio value>
+                  <Radio value={1}>
                     <span>Nam</span>
                   </Radio>
-                  <Radio value={false}>
+                  <Radio value={0}>
                     <span>Nữ</span>
                   </Radio>
                 </Radio.Group>
@@ -141,12 +158,16 @@ class UserModal extends PureComponent {
                 hasFeedback
                 {...formItemLayout}
               >
-                <Select />
+                <Select
+                  labelInValue
+                  options={this.state.depList}
+                  onFocus={this._onFocus}
+                />
               </FormItem>
             </Col>
             <Col span={12}>
               <FormItem
-                name="role"
+                name="is_admin"
                 rules={[
                   {
                     required: true,
@@ -157,10 +178,10 @@ class UserModal extends PureComponent {
                 {...formItemLayout}
               >
                 <Radio.Group>
-                  <Radio value>
+                  <Radio value={1}>
                     <span>Quản lý</span>
                   </Radio>
-                  <Radio value={false}>
+                  <Radio value={0}>
                     <span>Nhân viên</span>
                   </Radio>
                 </Radio.Group>

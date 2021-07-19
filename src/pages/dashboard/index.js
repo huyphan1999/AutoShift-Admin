@@ -15,6 +15,7 @@ import {
   Browser,
   Cpu,
   User,
+  TopLateSoon,
 } from './components'
 import styles from './index.less'
 import store from 'store'
@@ -31,6 +32,43 @@ const bodyStyle = {
   loading,
 }))
 class Dashboard extends PureComponent {
+  mapCarDashboard = (numberData) => {
+    const numbersInfor = [
+      {
+        icon: 'team',
+        color: Color.blue,
+        title: 'Tổng nhân viên',
+        number: 3241,
+        key: 'total_emp',
+      },
+      {
+        icon: 'in_time',
+        color: Color.green,
+        title: 'Đúng giờ',
+        number: 2781,
+        key: 'total_on_time',
+      },
+      {
+        icon: 'out_time',
+        color: Color.warning,
+        title: 'Đi muộn',
+        key: 'total_late_time',
+        number: 253,
+      },
+      {
+        icon: 'noCheck',
+        color: Color.danger,
+        title: 'Không vào ca',
+        number: 4324,
+        key: 'total_no_timekeeping',
+      },
+    ]
+    return numbersInfor.map((item) => ({
+      ...item,
+      number: numberData[item.key],
+    }))
+  }
+
   render() {
     const userDetail = store.get('user')
     const { avatar, username } = userDetail
@@ -46,13 +84,17 @@ class Dashboard extends PureComponent {
       browser,
       cpu,
       user,
+      data_statistical_time,
+      list_late_soon,
     } = dashboard
 
-    const numberCards = numbers.map((item, key) => (
-      <Col key={key} lg={6} md={12}>
-        <NumberCard {...item} />
-      </Col>
-    ))
+    const numberCards =
+      data_statistical_time &&
+      this.mapCarDashboard(data_statistical_time).map((item, key) => (
+        <Col key={key} lg={6} md={12}>
+          <NumberCard {...item} />
+        </Col>
+      ))
 
     return (
       <Page
@@ -61,91 +103,9 @@ class Dashboard extends PureComponent {
       >
         <Row gutter={24}>
           {numberCards}
-          <Col lg={18} md={24}>
-            <Card
-              bordered={false}
-              bodyStyle={{
-                padding: '24px 36px 24px 0',
-              }}
-            >
-              <Sales data={sales} />
-            </Card>
-          </Col>
-          <Col lg={6} md={24}>
-            <Row gutter={24}>
-              <Col lg={24} md={12}>
-                <Card
-                  bordered={false}
-                  className={styles.weather}
-                  bodyStyle={{
-                    padding: 0,
-                    height: 204,
-                    background: Color.blue,
-                  }}
-                >
-                  <Weather
-                    {...weather}
-                    loading={loading.effects['dashboard/queryWeather']}
-                  />
-                </Card>
-              </Col>
-              <Col lg={24} md={12}>
-                <Card
-                  bordered={false}
-                  className={styles.quote}
-                  bodyStyle={{
-                    padding: 0,
-                    height: 204,
-                    background: Color.peach,
-                  }}
-                >
-                  <ScrollBar>
-                    <Quote {...quote} />
-                  </ScrollBar>
-                </Card>
-              </Col>
-            </Row>
-          </Col>
-          <Col lg={12} md={24}>
-            <Card bordered={false} {...bodyStyle}>
-              <RecentSales data={recentSales} />
-            </Card>
-          </Col>
-          <Col lg={12} md={24}>
-            <Card bordered={false} {...bodyStyle}>
-              <ScrollBar>
-                <Comments data={comments} />
-              </ScrollBar>
-            </Card>
-          </Col>
           <Col lg={24} md={24}>
-            <Card
-              bordered={false}
-              bodyStyle={{
-                padding: '24px 36px 24px 0',
-              }}
-            >
-              <Completed data={completed} />
-            </Card>
-          </Col>
-          <Col lg={8} md={24}>
             <Card bordered={false} {...bodyStyle}>
-              <Browser data={browser} />
-            </Card>
-          </Col>
-          <Col lg={8} md={24}>
-            <Card bordered={false} {...bodyStyle}>
-              <ScrollBar>
-                <Cpu {...cpu} />
-              </ScrollBar>
-            </Card>
-          </Col>
-          <Col lg={8} md={24}>
-            <Card
-              bordered={false}
-              bodyStyle={{ ...bodyStyle.bodyStyle, padding: 0 }}
-            >
-              <User {...user} avatar={avatar} username={username} />
+              <TopLateSoon data={list_late_soon} />
             </Card>
           </Col>
         </Row>

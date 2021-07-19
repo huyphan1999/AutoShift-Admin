@@ -6,7 +6,6 @@ import { Trans } from '@lingui/macro'
 import { t } from '@lingui/macro'
 import { Button, Row, Col, DatePicker, Form, Input } from 'antd'
 import locale from 'antd/es/date-picker/locale/en_GB'
-import _debouce from 'lodash/debounce'
 import debounce from 'lodash/debounce'
 
 const { Search } = Input
