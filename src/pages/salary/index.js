@@ -11,7 +11,7 @@ import Filter from './components/Filter'
 import Modal from './components/Modal'
 
 @connect(({ salary, loading }) => ({ salary, loading }))
-class User extends PureComponent {
+class Salary extends PureComponent {
   handleRefresh = (newQuery) => {
     const { location } = this.props
     const { query, pathname } = location
@@ -28,12 +28,39 @@ class User extends PureComponent {
     })
   }
 
+  get modalProps() {
+    const { dispatch, salary, loading } = this.props
+    const { currentItem, modalVisible, modalType } = salary
+
+    return {
+      item: modalType === 'create' ? {} : currentItem,
+      visible: modalVisible,
+      destroyOnClose: true,
+      maskClosable: false,
+      width: 600,
+      confirmLoading: loading.effects[`salary/${modalType}`],
+      title: 'Tạo bảng lương',
+      centered: true,
+      onOk: (data) => {
+        dispatch({
+          type: `salary/${modalType}`,
+          payload: data,
+        })
+      },
+      onCancel() {
+        dispatch({
+          type: 'salary/hideModal',
+        })
+      },
+    }
+  }
+
   get listProps() {
     const { dispatch, salary, loading } = this.props
     const { list, pagination, selectedRowKeys } = salary
 
     return {
-      dataSource: [],
+      dataSource: list,
       loading: loading.effects['salary/query'],
       pagination,
       onChange: (page) => {
@@ -74,9 +101,10 @@ class User extends PureComponent {
       <Page inner>
         <Filter {...this.filterProps} />
         <List {...this.listProps} />
+        <Modal {...this.modalProps} />
       </Page>
     )
   }
 }
 
-export default User
+export default Salary

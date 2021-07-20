@@ -54,9 +54,8 @@ class List extends PureComponent {
       },
       {
         title: 'Ngày công',
-        dataIndex: 'total_work_day',
+        dataIndex: 'total_work_day_real',
         key: 'total_work_day',
-        render: (text) => <span>{round(text / 60)} </span>,
       },
       {
         title: 'Lương',

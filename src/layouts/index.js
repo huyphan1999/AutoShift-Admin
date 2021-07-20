@@ -10,14 +10,16 @@ import en_US from 'antd/lib/locale-provider/en_US'
 import pt_BR from 'antd/lib/locale-provider/pt_BR'
 
 import en_GB from 'antd/lib/locale-provider/en_GB'
+import vi_VN from 'antd/lib/locale-provider/vi_VN'
 
 import moment from 'moment'
 import 'moment/locale/en-nz'
 import 'moment/locale/en-gb' // for AntD since it doesn't support en-nz.
+import 'moment/locale/vi'
 
 import BaseLayout from './BaseLayout'
 
-moment.locale('en-nz')
+moment.locale('vi')
 
 const plurals = {
   zh,
@@ -77,7 +79,7 @@ class Layout extends Component {
     i18n.activate(language)
 
     return (
-      <ConfigProvider locale={en_GB}>
+      <ConfigProvider locale={vi_VN}>
         <I18nProvider i18n={i18n}>
           <BaseLayout>{children}</BaseLayout>
         </I18nProvider>

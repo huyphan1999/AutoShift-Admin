@@ -20,7 +20,7 @@ class Config extends PureComponent {
     return (
       <Page inner>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {list && (
+          {list.wifi && (
             <>
               <WifiConfig config={list} wifi={list?.wifi} />
               <LocationConfig config={list} location={list?.location} />

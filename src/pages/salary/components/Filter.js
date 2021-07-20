@@ -4,8 +4,7 @@ import moment from 'moment'
 import { FilterItem } from 'components'
 import { Trans } from '@lingui/macro'
 import { t } from '@lingui/macro'
-import { Button, Row, Col, DatePicker, Form, Input, Cascader } from 'antd'
-
+import { Button, Row, Col, DatePicker, Form, Input, Space } from 'antd'
 import locale from 'antd/es/date-picker/locale/en_GB'
 import debounce from 'lodash/debounce'
 
@@ -32,52 +31,24 @@ class Filter extends Component {
     for (let item in fields) {
       if ({}.hasOwnProperty.call(fields, item)) {
         if (moment.isMoment(fields[item])) {
-          fields.start_date = fields[item].startOf('week').format('YYYY-MM-DD')
-          fields.end_date = fields[item].endOf('week').format('YYYY-MM-DD')
-          fields[item] = undefined
+          fields[item] = this.normalized(fields[item])
         }
       }
     }
     return fields
   }
 
-  handleSubmit = () => {
+  handleChange = () => {
     const { onFilterChange } = this.props
-    const values = this.formRef.current.getFieldsValue()
-    const fields = this.handleFields(values)
-    onFilterChange(fields)
-  }
-
-  handleReset = () => {
-    const fields = this.formRef.current.getFieldsValue()
-    for (let item in fields) {
-      if ({}.hasOwnProperty.call(fields, item)) {
-        if (fields[item] instanceof Array) {
-          fields[item] = []
-        } else {
-          fields[item] = undefined
-        }
-      }
-    }
-    this.formRef.current.setFieldsValue(fields)
-    this.handleSubmit()
-  }
-  handleChange = (key, values) => {
-    const { onFilterChange } = this.props
-
-    console.log('hande change', values)
-    console.log(hi)
-
     let fields = this.formRef.current.getFieldsValue()
-
-    fields[key] = values
     fields = this.handleFields(fields)
 
+    console.log('onFilterChange', fields)
     onFilterChange(fields)
   }
 
   normalized = (value) => {
-    return value?.format('YYYY-MM-DD')
+    return value?.format('YYYY-MM')
   }
 
   _deboucehandleChange = debounce(this.handleChange, 500)
@@ -85,14 +56,6 @@ class Filter extends Component {
   render() {
     const { onAdd, filter } = this.props
     const { name, address } = filter
-
-    let initialCreateTime = []
-    if (filter.createTime && filter.createTime[0]) {
-      initialCreateTime[0] = moment(filter.createTime[0])
-    }
-    if (filter.createTime && filter.createTime[1]) {
-      initialCreateTime[1] = moment(filter.createTime[1])
-    }
 
     return (
       <Form
@@ -102,7 +65,20 @@ class Filter extends Component {
         initialValues={{}}
       >
         <Row gutter={24}>
-          <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
+          <Col span={4}>
+            <Form.Item
+              initialValue={moment().subtract(1, 'month')}
+              name="month_date"
+            >
+              <DatePicker
+                locale={locale}
+                style={{ width: '100%' }}
+                picker="month"
+                format={(value) => `Tháng ${value.format('MM/YYYY')}`}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
             <Form.Item name="name">
               <Search
                 placeholder={t`Search Name`}
@@ -110,33 +86,16 @@ class Filter extends Component {
               />
             </Form.Item>
           </Col>
-          <Col
-            {...ColProps}
-            xl={{ span: 4 }}
-            md={{ span: 8 }}
-            id="addressCascader"
-          ></Col>
-          <Col
-            {...ColProps}
-            xl={{ span: 6 }}
-            md={{ span: 8 }}
-            sm={{ span: 12 }}
-            id="createTimeRangePicker"
-          ></Col>
-          <Col
-            {...TwoColProps}
-            xl={{ span: 10 }}
-            md={{ span: 24 }}
-            sm={{ span: 24 }}
-          >
+
+          <Col span={16}>
             <Row type="flex" align="middle" justify="end">
-              <Form.Item normalize={this.normalized} name="month_date">
-                <DatePicker
-                  locale={locale}
-                  style={{ width: '100%' }}
-                  picker="month"
-                />
-              </Form.Item>
+              <Button
+                style={{ marginBottom: 24 }}
+                type="primary"
+                onClick={onAdd}
+              >
+                <span> Tạo bảng lương</span>
+              </Button>
             </Row>
           </Col>
         </Row>

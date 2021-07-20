@@ -17,12 +17,21 @@ import {
 import { Trans } from '@lingui/macro'
 import city from 'utils/city'
 import { t } from '@lingui/macro'
+import locale from 'antd/es/date-picker/locale/vi_VN'
+import moment from 'moment'
 
 const FormItem = Form.Item
 
-const formItemLayout = {}
+const formItemLayout = {
+  labelCol: {
+    span: 10,
+  },
+  wrapperCol: {
+    span: 14,
+  },
+}
 
-class UserModal extends PureComponent {
+class SalaryModal extends PureComponent {
   formRef = React.createRef()
 
   handleOk = () => {
@@ -35,7 +44,6 @@ class UserModal extends PureComponent {
           ...values,
           key: item.key,
         }
-        data.address = data.address.join(' ')
         onOk(data)
       })
       .catch((errorInfo) => {
@@ -44,149 +52,92 @@ class UserModal extends PureComponent {
   }
 
   render() {
+    console.log('locale', locale)
     const { item = {}, onOk, form, ...modalProps } = this.props
 
     return (
       <Modal {...modalProps} onOk={this.handleOk}>
-        <Form
-          ref={this.formRef}
-          name="control-ref"
-          initialValues={{
-            ...item,
-            address: item.address && item.address.split(' '),
-          }}
-          layout="vertical"
-        >
-          <Divider orientation="left">Thông tin cá nhân</Divider>
-          <Row gutter={20}>
-            <Col span={12}>
-              <FormItem
-                name="name"
-                rules={[{ required: true }]}
-                label={t`Name`}
-                hasFeedback
-                {...formItemLayout}
-              >
-                <Input />
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem
-                name="phone"
-                rules={[
-                  {
-                    required: true,
-                    pattern: /^1[34578]\d{9}$/,
-                    message: t`The input is not valid phone!`,
-                  },
-                ]}
-                label={t`Phone`}
-                hasFeedback
-                {...formItemLayout}
-              >
-                <Input />
-              </FormItem>
-            </Col>
-          </Row>
-
-          <Row gutter={20}>
-            <Col span={12}>
-              <FormItem
-                name="birth"
-                rules={[{ required: true }]}
-                label={'Ngày sinh'}
-                hasFeedback
-                {...formItemLayout}
-              >
-                <DatePicker format={'DD/MM/YY'} />
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem
-                name="sex"
-                rules={[{ required: true }]}
-                label={t`Giới tính`}
-                hasFeedback
-                {...formItemLayout}
-              >
-                <Radio.Group>
-                  <Radio value>
-                    <span>Nam</span>
-                  </Radio>
-                  <Radio value={false}>
-                    <span>Nữ</span>
-                  </Radio>
-                </Radio.Group>
-              </FormItem>
-            </Col>
-          </Row>
-
+        <Form ref={this.formRef} name="control-ref" layout="horizontal">
           <FormItem
-            name="address"
+            name="month_date"
             rules={[{ required: true }]}
-            label="Địa chỉ"
+            label={'Thời gian'}
             hasFeedback
-            {...formItemLayout}
+            initialValue={moment().subtract(1, 'month')}
           >
-            <Input />
+            <DatePicker
+              locale={locale}
+              style={{ width: '100%' }}
+              picker="month"
+              format={(value) => `Tháng ${value.format('MM/YYYY')}`}
+            />
           </FormItem>
-
-          <Divider orientation="left">Công ty</Divider>
-          <Row gutter={20}>
+          <Divider orientation="left">Giới hạn</Divider>
+          <Row>
             <Col span={12}>
               <FormItem
-                name="dep"
+                name="limit_late_in"
                 rules={[{ required: true }]}
-                label="Phòng ban"
+                label={'Đi trễ (phút)'}
                 hasFeedback
                 {...formItemLayout}
+                initialValue={0}
               >
-                <Select />
+                <InputNumber />
               </FormItem>
             </Col>
+
             <Col span={12}>
               <FormItem
-                name="role"
-                rules={[
-                  {
-                    required: true,
-                  },
-                ]}
-                label="Quyèn hạn"
+                name="limit_soon_out"
+                rules={[{ required: true }]}
+                label={'Về sớm (phút)'}
                 hasFeedback
+                initialValue={0}
                 {...formItemLayout}
               >
-                <Radio.Group>
-                  <Radio value>
-                    <span>Quản lý</span>
-                  </Radio>
-                  <Radio value={false}>
-                    <span>Nhân viên</span>
-                  </Radio>
-                </Radio.Group>
+                <InputNumber min={0} defaultValue={0} />
               </FormItem>
             </Col>
           </Row>
 
-          <FormItem
-            name="basic_salary"
-            rules={[{ required: true }]}
-            label="Lương"
-            hasFeedback
-            {...formItemLayout}
-          >
-            <InputNumber style={{ width: '100%' }} />
-          </FormItem>
+          <Divider orientation="left">Trừ lương </Divider>
+          <Row gutter={20}>
+            <Col span={12}>
+              <FormItem
+                name="minute_sub"
+                rules={[{ required: true }]}
+                label={'Thời gian (phút)'}
+                hasFeedback
+                initialValue={0}
+                {...formItemLayout}
+              >
+                <InputNumber defaultValue={0} />
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem
+                name="minute_sub_value"
+                rules={[{ required: true }]}
+                label={'Só tiên (VNĐ)'}
+                hasFeedback
+                initialValue={0}
+                {...formItemLayout}
+              >
+                <InputNumber defaultValue={0} />
+              </FormItem>
+            </Col>
+          </Row>
         </Form>
       </Modal>
     )
   }
 }
 
-UserModal.propTypes = {
+SalaryModal.propTypes = {
   type: PropTypes.string,
   item: PropTypes.object,
   onOk: PropTypes.func,
 }
 
-export default UserModal
+export default SalaryModal

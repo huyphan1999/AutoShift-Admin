@@ -47,8 +47,8 @@ class LocationConfig extends React.Component {
     super(props)
     this.state = {
       location: {
-        lat: props?.location?.lat ? props?.location?.lat : 20.5937,
-        lng: props?.location?.long ? props?.location?.long : 78.9629,
+        lat: props?.location?.lat ? props?.location?.lat : 10.523153,
+        lng: props?.location?.long ? props?.location?.long : 106.716475,
       },
       address: props?.location?.address ? props?.location?.address : '',
       search: '',
@@ -69,8 +69,14 @@ class LocationConfig extends React.Component {
   }
 
   onSave = async () => {
-    const { config, location } = this.props
-    const data = { ...config, location }
+    const { config, location: oldLocation } = this.props
+    const {
+      require,
+      address,
+      location: { lat, lng },
+    } = this.state
+    const newLocation = { ...oldLocation, require, address, lat, long: lng }
+    const data = { ...config, location: newLocation }
     try {
       this.setState({ loading: true })
       await postRequest(`${configs.apiUrl}timekeep/update`, data)
@@ -120,35 +126,36 @@ class LocationConfig extends React.Component {
       return
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({
-          location: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          },
-          markers: [
-            {
-              text: 'Current Location',
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            },
-          ],
-        })
+    // navigator.geolocation.getCurrentPosition(
+    //   (position) => {
+    //     this.setState({
+    //       location: {
+    //         lat: position.coords.latitude,
+    //         lng: position.coords.longitude,
+    //       },
+    //       markers: [
+    //         {
+    //           text: 'Current Location',
+    //           lat: position.coords.latitude,
+    //           lng: position.coords.longitude,
+    //         },
+    //       ],
+    //     })
 
-        this.getAddress()
-      },
-      (error) => {
-        alert(JSON.stringify(error))
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-      }
-    )
+    //     this.getAddress()
+    //   },
+    //   (error) => {
+    //     alert(JSON.stringify(error))
+    //   },
+    //   {
+    //     enableHighAccuracy: true,
+    //     timeout: 20000,
+    //     maximumAge: 1000,
+    //   }
+    // )
   }
   render() {
+    console.log(this.state)
     return (
       <Card
         style={{ width: '100%', height: '100%' }}
@@ -162,23 +169,6 @@ class LocationConfig extends React.Component {
             mapContainerStyle={mapStyles}
             zoom={16}
             center={this.state.location}
-            // onClick={({latLng}) => {
-            // 	Geocode.fromLatLng(latLng.lat(), latLng.lng()).then(
-            // 		(response) => {
-            // 			const address = response.results[0].formatted_address;
-            // 			this.setState({
-            // 				...this.state,
-            // 				markers: [
-            // 					...this.state.markers,
-            // 					{text: address, lat: latLng.lat(), lng: latLng.lng()},
-            // 				],
-            // 			});
-            // 		},
-            // 		(error) => {
-            // 			console.error(error);
-            // 		},
-            // 	);
-            // }}
           >
             <Marker
               onClick={() => this.setState({ ...this.state, viewInfo: true })}
