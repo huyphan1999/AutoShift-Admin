@@ -8,6 +8,7 @@ import { Link } from 'umi'
 import styles from './List.less'
 import { number_format } from 'utils'
 import { round } from 'lodash'
+import classNames from 'classnames'
 
 const { confirm } = Modal
 
@@ -27,40 +28,62 @@ class List extends PureComponent {
     }
   }
 
+  cellRender = (shifts) => {
+    if (shifts?.length) {
+      return (
+        <div
+          className={classNames({
+            late_soon: shifts.some(
+              (shift) => shift.soon_check_out || shift.late_check_in
+            ),
+            in_time: shifts.some(
+              (shift) =>
+                shift.status && !(shift.soon_check_out || shift.late_check_in)
+            ),
+            future: shifts.some((shift) => shift.status),
+          })}
+        >
+          {' '}
+          {`${shifts.length} ca`}
+        </div>
+      )
+    }
+
+    return <div className="timesheet-cell">--/--</div>
+  }
+
   render() {
     const { onDeleteItem, onEditItem, ...tableProps } = this.props
 
     const columns = [
       {
         title: null,
-        dataIndex: 'user_info',
-        key: 'user_info',
+        dataIndex: 'user',
+        key: 'user',
         fixed: 'left',
         width: 220,
-        render: (user_info, record) => (
-          <a to={`user/${record._id}`}>{user_info.name}</a>
-        ),
+        render: (user) => <a>{user.name}</a>,
       },
     ]
 
     const days = [
-      { label: 'Thứ Hai', key: 1 },
-      { label: 'Thứ Ba', key: 2 },
-      { label: 'Thứ Tư', key: 3 },
-      { label: 'Thứ Năm', key: 4 },
-      { label: 'Thứ Sáu', key: 5 },
-      { label: 'Thứ Bảy', key: 6 },
-      { label: 'Chủ nhật', key: 7 },
+      { label: 'Thứ Hai', key: 1, dataIndex: 'MON' },
+      { label: 'Thứ Ba', key: 2, dataIndex: 'TUE' },
+      { label: 'Thứ Tư', key: 3, dataIndex: 'WED' },
+      { label: 'Thứ Năm', key: 4, dataIndex: 'THU' },
+      { label: 'Thứ Sáu', key: 5, dataIndex: 'FRI' },
+      { label: 'Thứ Bảy', key: 6, dataIndex: 'SAT' },
+      { label: 'Chủ nhật', key: 7, dataIndex: 'SUN' },
     ]
 
     days.map((value) =>
       columns.push({
         title: `${value?.label}`,
-        dataIndex: 'total_late_check_in',
+        dataIndex: value.dataIndex,
         key: `${value?.key}`,
         width: 200,
-        className: 'text-center',
-        render: (text) => <span>{number_format(text)} </span>,
+        className: 'text-center timesheet-cell',
+        render: this.cellRender,
       })
     )
 

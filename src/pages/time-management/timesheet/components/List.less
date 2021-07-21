@@ -2,6 +2,42 @@
   :global {
     .ant-table td {
       white-space: nowrap;
+      &.timesheet-cell {
+        padding: 0px;
+        .late-soon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 50px;
+          background-color: rgba(255, 251, 20, 0.979);
+          border-color: rgba(228, 225, 58, 0.979);
+          border-style: solid;
+
+          border-radius: 4px;
+        }
+        .in-time {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 50px;
+          background-color: rgba(122, 218, 98, 0.979);
+          border-color: rgba(5, 196, 84, 0.979);
+          border-style: solid;
+
+          border-radius: 4px;
+        }
+        .future {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 50px;
+          background-color: rgba(202, 212, 200, 0.979);
+          border-color: rgba(147, 163, 153, 0.979);
+          border-style: solid;
+
+          border-radius: 4px;
+        }
+      }
     }
   }
 }

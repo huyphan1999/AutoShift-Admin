@@ -31,8 +31,8 @@ class Filter extends Component {
     for (let item in fields) {
       if ({}.hasOwnProperty.call(fields, item)) {
         if (moment.isMoment(fields[item])) {
-          fields.start_date = fields[item].startOf('week').format('YYYY-MM-DD')
-          fields.end_date = fields[item].endOf('week').format('YYYY-MM-DD')
+          fields.from_date = fields[item].startOf('week').format('YYYY-MM-DD')
+          fields.to_date = fields[item].endOf('week').format('YYYY-MM-DD')
           fields[item] = undefined
         }
       }
@@ -100,7 +100,7 @@ class Filter extends Component {
             sm={{ span: 24 }}
           >
             <Row type="flex" align="middle" justify="end">
-              <Form.Item name="week">
+              <Form.Item name="week" initialValue={moment()}>
                 <DatePicker
                   locale={locale}
                   style={{ width: '100%' }}

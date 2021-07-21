@@ -73,7 +73,7 @@ class User extends PureComponent {
     return (
       <Page inner>
         <Filter {...this.filterProps} />
-        {/* <List {...this.listProps} /> */}
+        <List {...this.listProps} />
       </Page>
     )
   }

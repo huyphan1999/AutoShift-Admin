@@ -4,6 +4,8 @@ import api from 'api'
 import { pageModel } from 'utils/model'
 import { postRequest, getRequest } from 'services'
 import configs from 'server'
+import isEmpty from 'lodash/isEmpty'
+import moment from 'moment'
 
 export default modelExtend(pageModel, {
   namespace: 'timesheet',
@@ -21,7 +23,12 @@ export default modelExtend(pageModel, {
         if (
           pathToRegexp('/time-management/timesheet').exec(location.pathname)
         ) {
-          const payload = location.query || { page: 1, pageSize: 10 }
+          const payload = isEmpty(location.query)
+            ? {
+                from_date: moment().startOf('week').format('YYYY-MM-DD'),
+                to_date: moment().endOf('week').format('YYYY-MM-DD'),
+              }
+            : location.query
           dispatch({
             type: 'query',
             payload,
@@ -33,10 +40,12 @@ export default modelExtend(pageModel, {
 
   effects: {
     *query({ payload = {} }, { call, put }) {
-      const res = yield call(postRequest, `${configs.apiUrl}salary/view`, {
-        month: 6,
-        year: 2021,
-      })
+      console.log(payload)
+      const res = yield call(
+        postRequest,
+        `${configs.apiUrl}empshift/list-time-sheet`,
+        payload
+      )
       if (res?.data) {
         const { data } = res
         yield put({
