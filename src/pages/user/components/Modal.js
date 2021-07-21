@@ -35,11 +35,13 @@ class UserModal extends PureComponent {
     this.formRef.current
       .validateFields()
       .then((values) => {
+        console.log(values)
         const data = {
           ...values,
-          key: item.key,
+          dep_id: values?.dep.value,
+          birth: values?.birth.format('YYYY-MM-DD'),
         }
-        data.address = data.address.join(' ')
+        console.log(values)
         onOk(data)
       })
       .catch((errorInfo) => {
@@ -93,7 +95,6 @@ class UserModal extends PureComponent {
                 rules={[
                   {
                     required: true,
-                    pattern: /^1[34578]\d{9}$/,
                     message: t`The input is not valid phone!`,
                   },
                 ]}
@@ -140,7 +141,6 @@ class UserModal extends PureComponent {
 
           <FormItem
             name="address"
-            rules={[{ required: true }]}
             label="Địa chỉ"
             hasFeedback
             {...formItemLayout}

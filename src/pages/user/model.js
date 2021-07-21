@@ -4,6 +4,7 @@ import api from 'api'
 import { pageModel } from 'utils/model'
 import { postRequest, getRequest } from 'services'
 import configs from 'server'
+import { message } from 'antd'
 
 const { queryUserList, createUser, removeUser, updateUser, removeUserList } =
   api
@@ -76,22 +77,32 @@ export default modelExtend(pageModel, {
     // },
 
     *create({ payload }, { call, put }) {
-      const data = yield call(createUser, payload)
-      if (data.success) {
+      const res = yield call(
+        postRequest,
+        `${configs.apiUrl}user/create`,
+        payload
+      )
+      if (res?.data) {
+        message.success('Tạo thành công')
         yield put({ type: 'hideModal' })
       } else {
-        throw data
+        message.error('Tạo thất bại')
       }
     },
 
     *update({ payload }, { select, call, put }) {
       const id = yield select(({ user }) => user.currentItem.id)
       const newUser = { ...payload, id }
-      const data = yield call(updateUser, newUser)
-      if (data.success) {
+      const res = yield call(
+        postRequest,
+        `${configs.apiUrl}user/update`,
+        newUser
+      )
+      if (res?.data) {
+        message.success('Cập nhật thành công')
         yield put({ type: 'hideModal' })
       } else {
-        throw data
+        message.error('Cập nhật thất bại')
       }
     },
   },
