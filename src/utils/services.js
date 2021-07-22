@@ -1,3 +1,5 @@
+import { buildUrlWithParams } from './index'
+
 export async function postRequest(url, data) {
   console.log('post Request', url, data)
   const response = await fetch(url, {
@@ -27,9 +29,9 @@ export async function postRequest(url, data) {
   }
 }
 
-export async function getRequest(url, id) {
-  console.log('get Request', url)
-  const getUrl = id ? url + `?id=${id}` : url
+export async function getRequest(url, params) {
+  console.log('get Request', url, params)
+  const getUrl = buildUrlWithParams(url)
   const response = await fetch(getUrl, {
     method: 'GET',
     headers: {

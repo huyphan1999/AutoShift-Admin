@@ -275,3 +275,17 @@ export function mapSelectData(item) {
     value: item.id || item._id,
   }
 }
+
+export function buildUrlWithParams(url, params) {
+  let uri = url
+  if (params) {
+    const esc = encodeURIComponent
+    const query = Object.keys(params)
+      .map((k) => `${esc(k)}=${esc(params[k])}`)
+      .join('&')
+    if (query) {
+      uri = `${uri}?${query}`
+    }
+  }
+  return uri
+}
