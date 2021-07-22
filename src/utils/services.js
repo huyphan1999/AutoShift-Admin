@@ -30,8 +30,8 @@ export async function postRequest(url, data) {
 }
 
 export async function getRequest(url, params) {
-  console.log('get Request', url, params)
-  const getUrl = buildUrlWithParams(url)
+  const getUrl = buildUrlWithParams(url,params)
+  console.log('get Request', getUrl, params)
   const response = await fetch(getUrl, {
     method: 'GET',
     headers: {

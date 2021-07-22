@@ -35,7 +35,7 @@ export default modelExtend(pageModel, {
 
   effects: {
     *query({ payload = {} }, { call, put }) {
-      const res = yield call(getRequest, `${configs.apiUrl}user/list`)
+      const res = yield call(getRequest, `${configs.apiUrl}user/list`,payload)
       if (res?.data) {
         const { data } = res
         yield put({
