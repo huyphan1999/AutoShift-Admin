@@ -159,7 +159,7 @@ class LocationConfig extends React.Component {
     return (
       <Card
         style={{ width: '100%', height: '100%' }}
-        title="Location Configuation"
+        title="Thiết lập ví trí chấm công"
         extra={
           <Switch onChange={this.onSwitchChange} checked={this.state.require} />
         }
@@ -261,7 +261,7 @@ class LocationConfig extends React.Component {
               type="primary"
               loading={this.state.loading}
             >
-              Save
+              Lưu
             </Button>
           </div>
         </LoadScript>

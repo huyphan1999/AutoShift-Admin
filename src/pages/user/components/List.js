@@ -38,11 +38,11 @@ class List extends PureComponent {
       },
 
       {
-        title: 'Giới tính',
-        dataIndex: 'sex',
+        title: 'Quyền hạn',
+        dataIndex: 'is_admin',
         key: 'sex',
-        width: '7%',
-        render: (text) => <span>{text ? 'Nam' : 'Nữ'}</span>,
+        width: '100',
+        render: (text) => <span>{text ? 'Quản lý' : 'Nhân viên'}</span>,
       },
       {
         title: 'Điện thoại',
@@ -55,11 +55,11 @@ class List extends PureComponent {
         key: 'dep',
         render: (text) => <span>{text.name}</span>,
       },
-      {
-        title: 'Chức vụ',
-        dataIndex: ['position', 'position_name'],
-        key: 'position',
-      },
+      // {
+      //   title: 'Chức vụ',
+      //   dataIndex: ['position', 'position_name'],
+      //   key: 'position',
+      // },
       {
         title: 'Lương',
         dataIndex: 'basic_salary',

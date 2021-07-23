@@ -66,7 +66,7 @@ class Wificonfig extends PureComponent {
       >
         <Card
           style={{ width: '100%' }}
-          title="Wifi Configuation"
+          title="Thiết lập wifi chấm công"
           extra={
             <Switch
               onChange={this.onSwitchChange}
@@ -98,7 +98,7 @@ class Wificonfig extends PureComponent {
           </Row>
           <Row align="middle" justify="center">
             <Button onClick={this.handleOk} type="primary">
-              Save
+              Lưu
             </Button>
           </Row>
         </Card>

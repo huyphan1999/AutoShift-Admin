@@ -16,6 +16,7 @@ export async function postRequest(url, data) {
   console.log('post Request res', json)
 
   // console.log(hi)
+  return Promise.resolve(json)
 
   if (json.error_code == 0) {
     return Promise.resolve(json)
@@ -30,7 +31,7 @@ export async function postRequest(url, data) {
 }
 
 export async function getRequest(url, params) {
-  const getUrl = buildUrlWithParams(url,params)
+  const getUrl = buildUrlWithParams(url, params)
   console.log('get Request', getUrl, params)
   const response = await fetch(getUrl, {
     method: 'GET',
@@ -40,6 +41,8 @@ export async function getRequest(url, params) {
     },
   })
   const json = await response.json()
+
+  return Promise.resolve(json)
 
   console.log('get Request res', response, json)
   if (json.error_code == 0) {

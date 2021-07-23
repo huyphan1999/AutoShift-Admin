@@ -33,20 +33,12 @@ class List extends PureComponent {
       return (
         <div
           className={classNames({
-            'late-soon': shifts.some(
-              (shift) => (shift.soon_check_out >=600 && shift.soon_check_out <720 ) || ( shift.late_check_in >=600 && shift.late_check_in <720)
-            ),
-            'no-check-in': shifts.some(
-              (shift) => shift.soon_check_out >=720  || shift.late_check_in >=720
-            ),
-            'in-time': shifts.some(
-              (shift) =>
-                shift.status && !(shift.soon_check_out < 600 && shift.late_check_in < 600)
-            ),
+            'late-soon': shifts.some((shift) => shift.type == 'late-soon'),
+            'no-check-in': shifts.some((shift) => shift.type == 'no-check-in'),
+            'in-time': shifts.some((shift) => shift.type == 'in-time'),
             future: shifts.some((shift) => shift.status == -1),
           })}
         >
-          {' '}
           {`${shifts.length} ca`}
         </div>
       )

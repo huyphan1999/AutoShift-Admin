@@ -50,10 +50,14 @@ class Login extends PureComponent {
           </div>
           <Form onFinish={handleOk}>
             <FormItem name="name" rules={[{ required: true }]} hasFeedback>
-              <Input placeholder={t`Company name`} />
+              <Input placeholder={t`Tên công ty`} />
             </FormItem>
-            <FormItem name="phone_number" rules={[{ required: true }]} hasFeedback>
-              <Input type="phone" placeholder={t`Phone`} />
+            <FormItem
+              name="phone_number"
+              rules={[{ required: true }]}
+              hasFeedback
+            >
+              <Input type="phone" placeholder={t`Số điện thoại`} />
             </FormItem>
             <Row>
               <Button
@@ -61,23 +65,10 @@ class Login extends PureComponent {
                 htmlType="submit"
                 loading={loading.effects.login}
               >
-                <Trans>Sign in</Trans>
+                <Trans>Đăng nhập</Trans>
               </Button>
-              <p>
-                <span className="margin-right">
-                  <Trans>Username</Trans>
-                  ：guest
-                </span>
-                <span>
-                  <Trans>Password</Trans>
-                  ：guest
-                </span>
-              </p>
             </Row>
           </Form>
-        </div>
-        <div className={styles.footer}>
-          <GlobalFooter links={footerLinks} copyright={config.copyright} />
         </div>
       </Fragment>
     )

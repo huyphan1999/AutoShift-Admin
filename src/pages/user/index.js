@@ -114,17 +114,17 @@ class User extends PureComponent {
           },
         })
       },
-      rowSelection: {
-        selectedRowKeys,
-        onChange: (keys) => {
-          dispatch({
-            type: 'user/updateState',
-            payload: {
-              selectedRowKeys: keys,
-            },
-          })
-        },
-      },
+      // rowSelection: {
+      //   selectedRowKeys,
+      //   onChange: (keys) => {
+      //     dispatch({
+      //       type: 'user/updateState',
+      //       payload: {
+      //         selectedRowKeys: keys,
+      //       },
+      //     })
+      //   },
+      // },
     }
   }
 

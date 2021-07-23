@@ -88,15 +88,15 @@ class Filter extends Component {
           <Col span={12}>
             <Form.Item name="name">
               <Search
-                placeholder={t`Search Name`}
+                placeholder={t`Tìm theo tên`}
                 onSearch={this.handleSubmit}
               />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Row type="flex" align="middle" justify="end">
-              <Button type="ghost" onClick={onAdd}>
-                <Trans>Create</Trans>
+              <Button type="primary" onClick={onAdd}>
+                <Trans>Tạo nhân viên</Trans>
               </Button>
             </Row>
           </Col>

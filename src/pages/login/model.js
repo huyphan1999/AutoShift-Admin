@@ -5,6 +5,8 @@ import configs from 'server'
 import { setToken } from 'utils'
 import store from 'store'
 
+import { Button, notification, Space } from 'antd'
+
 export default {
   namespace: 'login',
 
@@ -21,7 +23,7 @@ export default {
     *login({ payload }, { put, call, select }) {
       const res = yield call(
         postRequest,
-        `${configs.apiUrl}auth/login`,
+        `${configs.apiUrl}auth/login-web`,
         payload
       )
 
@@ -34,8 +36,11 @@ export default {
         console.log('res.data', res.data)
         store.set('user', user)
         yield put({ type: 'app/query' })
-      } else {
-        throw data
+      } else if (res?.error_code == 400) {
+        notification.error({
+          message: 'Thông báo',
+          description: res?.message[0],
+        })
       }
     },
   },
