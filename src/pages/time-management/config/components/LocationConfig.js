@@ -92,12 +92,20 @@ class LocationConfig extends React.Component {
     geocodeByAddress(newAddress)
       .then((results) => {
         console.log('handleSelect', results)
-        getLatLng(results[0])
-      })
-      .then((latLng) => {
-        this.setState({ location: latLng, address: this.state.address })
+        // getLatLng(results[0])
+        const lat = results[0]?.geometry?.location.lat()
+        const lng = results[0]?.geometry?.location.lng()
+        this.setState({
+          location: { lat, lng },
+          address: this.state.address,
+        })
         this.getAddress()
       })
+      // .then((latLng) => {
+      //   console.log('handleSelect', latLng)
+      //   this.setState({ location: latLng, address: this.state.address })
+      //   this.getAddress()
+      // })
       .catch((error) => console.error('Error', error))
   }
 

@@ -75,7 +75,7 @@ class Filter extends Component {
           <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
             <Form.Item name="name">
               <Search
-                placeholder={t`Search Name`}
+                placeholder={t`Tìm theo tên`}
                 onSearch={this.handleSubmit}
               />
             </Form.Item>

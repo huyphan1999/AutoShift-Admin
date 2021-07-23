@@ -78,16 +78,16 @@ class Filter extends Component {
               />
             </Form.Item>
           </Col>
-          <Col span={4}>
+          <Col span={6}>
             <Form.Item name="name">
               <Search
-                placeholder={t`Search Name`}
+                placeholder={t`Tìm theo tên`}
                 onSearch={this.handleSubmit}
               />
             </Form.Item>
           </Col>
 
-          <Col span={16}>
+          <Col span={14}>
             <Row type="flex" align="middle" justify="end">
               <Button
                 style={{ marginBottom: 24 }}
