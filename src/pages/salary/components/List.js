@@ -76,7 +76,7 @@ class List extends PureComponent {
         {...tableProps}
         pagination={{
           ...tableProps.pagination,
-          showTotal: (total) => t`Tất cả ${total} nhân viên`,
+          showTotal: (total) => `Tất cả ${total} nhân viên`,
         }}
         className={styles.table}
         bordered

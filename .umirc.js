@@ -8,7 +8,7 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 // how to speed compile: https://umijs.org/guide/boost-compile-speed
 export default {
   // IMPORTANT! change next line to yours or delete. And hide in dev
-  publicPath: isDevelopment ? '/' : 'https://cdn.antd-admin.zuiidea.com/',
+  // publicPath: isDevelopment ? '/' : 'https://cdn.antd-admin.zuiidea.com/',
   alias: {
     api: resolve(__dirname, './src/services/'),
     components: resolve(__dirname, './src/components'),
@@ -54,13 +54,6 @@ export default {
     exclude: [],
   },
   // Webpack Configuration
-  proxy: {
-    '/api/v1/weather': {
-      target: 'https://api.seniverse.com/',
-      changeOrigin: true,
-      pathRewrite: { '^/api/v1/weather': '/v3/weather' },
-    },
-  },
   // Theme for antd
   // https://ant.design/docs/react/customize-theme
   theme: lessToJs(
@@ -70,11 +63,11 @@ export default {
   chainWebpack: function (config, { webpack }) {
     config.merge({
       optimization: {
-        minimize: false,
+        minimize: true,
         splitChunks: {
           chunks: 'all',
-          minSize: 30000,
-          minChunks: 3,
+          minSize: 3000,
+          minChunks: 10,
           automaticNameDelimiter: '.',
           cacheGroups: {
             react: {
@@ -87,35 +80,10 @@ export default {
               priority: 20,
               test: /[\\/]node_modules[\\/](antd|@ant-design\/icons)[\\/]/,
             },
-            'echarts-gl': {
-              name: 'echarts-gl',
-              priority: 30,
-              test: /[\\/]node_modules[\\/]echarts-gl[\\/]/,
-            },
             zrender: {
               name: 'zrender',
               priority: 30,
               test: /[\\/]node_modules[\\/]zrender[\\/]/,
-            },
-            echarts: {
-              name: 'echarts',
-              priority: 20,
-              test: /[\\/]node_modules[\\/](echarts|echarts-for-react|echarts-liquidfill)[\\/]/,
-            },
-            highcharts: {
-              name: 'highcharts',
-              priority: 20,
-              test: /[\\/]node_modules[\\/]highcharts[\\/]/,
-            },
-            recharts: {
-              name: 'recharts',
-              priority: 20,
-              test: /[\\/]node_modules[\\/]recharts[\\/]/,
-            },
-            draftjs: {
-              name: 'draftjs',
-              priority: 30,
-              test: /[\\/]node_modules[\\/](draft-js|react-draft-wysiwyg|draftjs-to-html|draftjs-to-markdown)[\\/]/,
             },
             async: {
               chunks: 'async',

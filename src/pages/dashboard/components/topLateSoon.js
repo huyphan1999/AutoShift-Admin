@@ -3,7 +3,7 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import { Table, Tag } from 'antd'
 import { Color } from 'utils'
-import styles from './recentSales.less'
+import styles from './topLateSoon.less'
 
 const status = {
   late_check_in: {
@@ -13,7 +13,7 @@ const status = {
   soon_check_out: {
     color: Color.yellow,
     text: 'Về sớm',
-  }
+  },
 }
 
 function TopLateSoon({ data }) {
