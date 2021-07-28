@@ -1,0 +1,37 @@
+.notification {
+  padding: 0;
+  width: 200px;
+  .notificationItem {
+    transition: all 0.3s;
+    padding: 12px 24px;
+    cursor: pointer;
+    border-width: 18px;
+  }
+  .clearButton {
+    text-align: center;
+    height: 48px;
+    line-height: 48px;
+    cursor: pointer;
+  }
+}
+
+.notificationPopover {
+  padding: 0 !important;
+  :global {
+    .ant-popover-inner-content {
+      padding: 0;
+    }
+    .ant-popover-arrow {
+      display: none;
+    }
+    .ant-list-item-content {
+      flex: 0;
+      margin-left: 16px;
+    }
+    .ant-popover-placement-bottom
+      .ant-popover-placement-bottomLeft
+      .ant-popover-placement-bottomRight {
+      padding-top: 0;
+    }
+  }
+}

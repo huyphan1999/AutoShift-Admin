@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Table, Modal, Avatar } from 'antd'
+import { Table, Modal, Popover, List } from 'antd'
 import { DropOption } from 'components'
 import { t } from '@lingui/macro'
 import { Trans } from '@lingui/macro'
@@ -9,10 +9,21 @@ import styles from './List.less'
 import { number_format } from 'utils'
 import { round } from 'lodash'
 import classNames from 'classnames'
+import { Ellipsis } from 'components'
+import { RightOutlined } from '@ant-design/icons'
+
+import stylesItem from './ShiftDetail.less'
 
 const { confirm } = Modal
 
-class List extends PureComponent {
+const statusColors = [
+  { title: 'Đi trễ/Về sớm', color: '#e4e13a' },
+  { title: 'Đúng giờ', color: '#06c154' },
+  { title: 'Chưa vào ca', color: '#a11717' },
+  { title: 'Ca theo lịch', color: '#93a399' },
+]
+
+class ListTimeSheet extends PureComponent {
   handleMenuClick = (record, e) => {
     const { onDeleteItem, onEditItem } = this.props
 
@@ -31,20 +42,75 @@ class List extends PureComponent {
   cellRender = (shifts) => {
     if (shifts?.length) {
       return (
-        <div
-          className={classNames({
-            'late-soon': shifts.some((shift) => shift.type == 'late-soon'),
-            'no-check-in': shifts.some((shift) => shift.type == 'no-check-in'),
-            'in-time': shifts.some((shift) => shift.type == 'in-time'),
-            future: shifts.some((shift) => shift.status == -1),
-          })}
+        <Popover
+          placement="bottomRight"
+          trigger="click"
+          key="notifications"
+          overlayClassName={stylesItem.notificationPopover}
+          // getPopupContainer={() => document.querySelector('#primaryLayout')}
+          content={
+            <div className={stylesItem.notification}>
+              <List
+                itemLayout="horizontal"
+                dataSource={shifts}
+                renderItem={(item) => (
+                  <List.Item className={stylesItem.notificationItem}>
+                    <List.Item.Meta
+                      title={
+                        <Ellipsis tooltip lines={1}>
+                          {`${item.shift_name} (${item.time_begin} - ${item.time_end})`}
+                        </Ellipsis>
+                      }
+                      description={this.getDescription(item)}
+                    />
+                  </List.Item>
+                )}
+              />
+            </div>
+          }
         >
-          {`${shifts.length} ca`}
-        </div>
+          <div
+            className={classNames({
+              'in-time': shifts.some((shift) => shift.type == 'in-time'),
+              'late-soon': shifts.some((shift) => shift.type == 'late-soon'),
+              'no-check-in': shifts.some(
+                (shift) => shift.type == 'no-check-in'
+              ),
+              future: shifts.some((shift) => shift.status == -1),
+            })}
+          >
+            {`${shifts.length} ca`}
+          </div>
+        </Popover>
       )
     }
 
     return <div className="timesheet-cell">--/--</div>
+  }
+
+  getDescription = ({ type, soon_check_out, late_check_in }) => {
+    if (type == 'late-soon') {
+      return (
+        <span style={{ color: '#d6d32a', fontWeight: 'bolder' }}>
+          {`Đi trễ : ${Math.round(late_check_in / 60)}p   Về sớm: ${Math.round(
+            soon_check_out / 60
+          )}p`}
+        </span>
+      )
+    }
+    if (type == 'no-check-in') {
+      return (
+        <span style={{ color: '#a11717', fontWeight: 'bolder' }}>
+          Không chấm công
+        </span>
+      )
+    }
+    if (type == 'in-time') {
+      return (
+        <span style={{ color: '#06c154', fontWeight: 'bolder' }}>Đúng giờ</span>
+      )
+    }
+    return ''
   }
 
   render() {
@@ -57,7 +123,7 @@ class List extends PureComponent {
         key: 'user',
         fixed: 'left',
         width: 220,
-        render: (user) => <a>{user.name}</a>,
+        render: (user) => <a>{user?.name}</a>,
       },
     ]
 
@@ -100,10 +166,10 @@ class List extends PureComponent {
   }
 }
 
-List.propTypes = {
+ListTimeSheet.propTypes = {
   onDeleteItem: PropTypes.func,
   onEditItem: PropTypes.func,
   location: PropTypes.object,
 }
 
-export default List
+export default ListTimeSheet

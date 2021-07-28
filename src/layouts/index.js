@@ -34,6 +34,10 @@ const languages = {
 }
 const { defaultLanguage } = i18n
 
+const validateMessages = {
+  required: "'${label}' là bắt buộc!",
+}
+
 @withRouter
 class Layout extends Component {
   state = {}
@@ -79,7 +83,7 @@ class Layout extends Component {
     i18n.activate(language)
 
     return (
-      <ConfigProvider locale={vi_VN}>
+      <ConfigProvider form={{ validateMessages }} locale={vi_VN}>
         <I18nProvider i18n={i18n}>
           <BaseLayout>{children}</BaseLayout>
         </I18nProvider>

@@ -5,8 +5,9 @@ import { FilterItem } from 'components'
 import { Trans } from '@lingui/macro'
 import { t } from '@lingui/macro'
 import { Button, Row, Col, DatePicker, Form, Input } from 'antd'
-import locale from 'antd/es/date-picker/locale/en_GB'
+import locale from 'antd/es/date-picker/locale/vi_VN'
 import debounce from 'lodash/debounce'
+import './Filter.less'
 
 const { Search } = Input
 const { RangePicker } = DatePicker
@@ -23,6 +24,13 @@ const TwoColProps = {
   ...ColProps,
   xl: 96,
 }
+
+const statusColors = [
+  { title: 'Đi trễ/Về sớm', color: '#e4e13a' },
+  { title: 'Đúng giờ', color: '#06c154' },
+  { title: 'Chưa vào ca', color: '#a11717' },
+  { title: 'Ca theo lịch', color: '#93a399' },
+]
 
 class Filter extends Component {
   formRef = React.createRef()
@@ -82,20 +90,33 @@ class Filter extends Component {
           </Col>
           <Col
             {...ColProps}
-            xl={{ span: 4 }}
-            md={{ span: 8 }}
-            id="addressCascader"
-          ></Col>
-          <Col
-            {...ColProps}
-            xl={{ span: 6 }}
-            md={{ span: 8 }}
-            sm={{ span: 12 }}
+            xl={{ span: 16 }}
+            md={{ span: 24 }}
+            sm={{ span: 24 }}
             id="createTimeRangePicker"
-          ></Col>
+          >
+            <Row
+              style={{ height: '60%' }}
+              type="flex"
+              align="middle"
+              justify="center"
+            >
+              {statusColors.map((status) => (
+                <div className="note-item">
+                  <div
+                    className="dot"
+                    style={{
+                      backgroundColor: status.color,
+                    }}
+                  />
+                  <span>{status.title}</span>
+                </div>
+              ))}
+            </Row>
+          </Col>
           <Col
             {...TwoColProps}
-            xl={{ span: 10 }}
+            xl={{ span: 4 }}
             md={{ span: 24 }}
             sm={{ span: 24 }}
           >

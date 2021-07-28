@@ -41,18 +41,22 @@ export default modelExtend(pageModel, {
         `${configs.apiUrl}salary/register`,
         payload
       )
-      if (res?.data) {
+      if (res?.data && res?.error_code == 0) {
         message.success('Tạo thành công')
         yield put({ type: 'hideModal' })
       } else {
-        message.error('Tạo thất bại')
+        message.error(
+          Array.isArray(res.message) ? res?.message[0] : res?.message
+        )
       }
     },
     *query({ payload = {} }, { call, put }) {
       console.log(payload)
-      const res = yield call(postRequest, `${configs.apiUrl}salary/view`, {
-        month_date: payload.month_date,
-      })
+      const res = yield call(
+        postRequest,
+        `${configs.apiUrl}salary/view`,
+        payload
+      )
       if (res?.data) {
         const { data } = res
         yield put({

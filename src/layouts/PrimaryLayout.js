@@ -39,6 +39,7 @@ class PrimaryLayout extends PureComponent {
   }
 
   onCollapseChange = (collapsed) => {
+    console.log('onCollapseChange', collapsed)
     this.props.dispatch({
       type: 'app/handleCollapseChange',
       payload: collapsed,
@@ -86,7 +87,12 @@ class PrimaryLayout extends PureComponent {
       menus,
       isMobile,
       collapsed,
-      onCollapseChange: this.onCollapseChange,
+      onCollapseChange(collapsed) {
+        dispatch({
+          type: 'app/handleCollapseChange',
+          payload: collapsed,
+        })
+      },
       onThemeChange(theme) {
         dispatch({
           type: 'app/handleThemeChange',
