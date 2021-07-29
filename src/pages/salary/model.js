@@ -6,6 +6,7 @@ import { postRequest, getRequest } from 'services'
 import configs from 'server'
 import { message } from 'antd'
 import isEmpty from 'lodash/isEmpty'
+import { stringify } from 'qs'
 
 export default modelExtend(pageModel, {
   namespace: 'salary',
@@ -21,9 +22,11 @@ export default modelExtend(pageModel, {
     setup({ dispatch, history }) {
       history.listen((location) => {
         if (pathToRegexp('/salary').exec(location.pathname)) {
-          const payload = isEmpty(location.query)
-            ? { month_date: '2021-06' }
-            : location.query
+          const { query } = location
+          let payload = { ...query }
+          if (!payload.month_date) {
+            payload.month_date = '2021-06'
+          }
           console.log('pathToRegexp', location.query, isEmpty(location.query))
           dispatch({
             type: 'query',

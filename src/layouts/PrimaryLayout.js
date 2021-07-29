@@ -52,6 +52,7 @@ class PrimaryLayout extends PureComponent {
     const { theme, collapsed, notifications, routeList } = app
     const user = store.get('user') || {}
     const { isMobile } = this.state
+    const { onCollapseChange } = this
 
     // Localized route name.
 
@@ -87,12 +88,7 @@ class PrimaryLayout extends PureComponent {
       menus,
       isMobile,
       collapsed,
-      onCollapseChange(collapsed) {
-        dispatch({
-          type: 'app/handleCollapseChange',
-          payload: collapsed,
-        })
-      },
+      onCollapseChange,
       onThemeChange(theme) {
         dispatch({
           type: 'app/handleThemeChange',
@@ -108,16 +104,13 @@ class PrimaryLayout extends PureComponent {
             <Drawer
               maskClosable
               closable={false}
-              onClose={this.onCollapseChange(!collapsed)}
+              onClose={onCollapseChange.bind(this, !collapsed)}
               visible={!collapsed}
               placement="left"
-              width={200}
-              style={{
-                padding: 0,
-                height: '100vh',
-              }}
+              width={250}
+              bodyStyle={{ padding: 0 }}
             >
-              <Sider {...siderProps} collapsed={false} />
+              <Sider {...siderProps} wrapper="Drawer" collapsed={false} />
             </Drawer>
           ) : (
             <Sider {...siderProps} />

@@ -16,21 +16,12 @@ import Geocode from 'react-geocode'
 import { postRequest, getRequest } from 'services'
 import configs from 'server'
 
-import {
-  Table,
-  Modal,
-  Card,
-  Button,
-  Switch,
-  Input,
-  Row,
-  Col,
-  Space,
-  Form,
-} from 'antd'
+import { history } from 'umi'
+
+import { Card, Button, Switch, Space, InputNumber, message } from 'antd'
 
 const mapStyles = {
-  height: '60vh',
+  height: '80vh',
   width: '100%',
 }
 
@@ -52,6 +43,7 @@ class LocationConfig extends React.Component {
       },
       address: props?.location?.address ? props?.location?.address : '',
       search: '',
+      r: props?.location?.r || 500,
       viewInfo: false,
       copied: false,
       loading: false,
@@ -69,18 +61,21 @@ class LocationConfig extends React.Component {
   }
 
   onSave = async () => {
-    const { config, location: oldLocation } = this.props
+    const { config, location: oldLocation,reload } = this.props
     const {
       require,
       address,
       location: { lat, lng },
+      r,
     } = this.state
-    const newLocation = { ...oldLocation, require, address, lat, long: lng }
+    const newLocation = { ...oldLocation, require, address, lat, long: lng, r }
     const data = { ...config, location: newLocation }
     try {
       this.setState({ loading: true })
       await postRequest(`${configs.apiUrl}timekeep/update`, data)
+      message.success('Lưu thành công')
       this.setState({ loading: false })
+      reload()
     } catch (error) {
       console.log(error)
     }
@@ -126,6 +121,10 @@ class LocationConfig extends React.Component {
     const lng = e.latLng.lng()
     this.setState({ location: { lat, lng }, copied: false })
     this.getAddress()
+  }
+
+  onRadiusChange = (r) => {
+    this.setState({ r })
   }
 
   componentDidMount() {
@@ -256,6 +255,18 @@ class LocationConfig extends React.Component {
               </div>
             )}
           </PlacesAutocomplete>
+
+          <div className="App__Radius">
+            <div>
+              <span>Bán kính :&nbsp;</span>
+              <InputNumber
+                defaultValue={500}
+                value={this.state.r}
+                onChange={this.onRadiusChange}
+                min={300}
+              />
+            </div>
+          </div>
           <div className="App__Address">
             <Space align="center">
               {this.state.address.length === 0

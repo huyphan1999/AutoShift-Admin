@@ -20,7 +20,7 @@ class Sider extends PureComponent {
       onCollapseChange,
     } = this.props
 
-    console.log('SIDER', typeof onCollapseChange)
+    console.log('SIDER', this.props)
 
     return (
       <Layout.Sider
@@ -30,7 +30,7 @@ class Sider extends PureComponent {
         trigger={null}
         collapsible
         collapsed={collapsed}
-        onBreakpoint={!isMobile && onCollapseChange}
+        onCollapse={onCollapseChange}
         className={styles.sider}
       >
         <div className={styles.brand}>

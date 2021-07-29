@@ -53,6 +53,7 @@ function TopLateSoon({ data }) {
         columns={columns}
         rowKey="id"
         dataSource={data}
+        loading={!data}
       />
     </div>
   )

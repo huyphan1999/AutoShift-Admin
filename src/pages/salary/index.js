@@ -8,6 +8,7 @@ import { Page } from 'components'
 import { stringify } from 'qs'
 import List from './components/List'
 import Filter from './components/Filter'
+
 import Modal from './components/Modal'
 
 @connect(({ salary, loading }) => ({ salary, loading }))
@@ -45,7 +46,7 @@ class Salary extends PureComponent {
         dispatch({
           type: `salary/${modalType}`,
           payload: data,
-        })
+        }).then(() => this.handleRefresh())
       },
       onCancel() {
         dispatch({

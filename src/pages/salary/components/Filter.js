@@ -13,7 +13,6 @@ const { RangePicker } = DatePicker
 
 const ColProps = {
   xs: 24,
-  sm: 12,
   style: {
     marginBottom: 16,
   },
@@ -55,19 +54,22 @@ class Filter extends Component {
 
   render() {
     const { onAdd, filter } = this.props
-    const { name, address } = filter
+    const { name, address, month_date } = filter
 
     return (
       <Form
         onFieldsChange={this._deboucehandleChange}
         ref={this.formRef}
         name="control-ref"
-        initialValues={{}}
       >
         <Row gutter={24}>
-          <Col span={4}>
+          <Col {...ColProps} sm={6} lg={4}>
             <Form.Item
-              initialValue={moment().subtract(1, 'month')}
+              initialValue={
+                month_date
+                  ? moment(month_date, 'YYYY-MM')
+                  : moment().subtract(1, 'month')
+              }
               name="month_date"
             >
               <DatePicker
@@ -78,7 +80,7 @@ class Filter extends Component {
               />
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col {...ColProps} lg={6}>
             <Form.Item name="name">
               <Search
                 placeholder={t`Tìm theo tên`}
@@ -87,7 +89,7 @@ class Filter extends Component {
             </Form.Item>
           </Col>
 
-          <Col span={14}>
+          <Col {...ColProps} lg={14}>
             <Row type="flex" align="middle" justify="end">
               <Button
                 style={{ marginBottom: 24 }}

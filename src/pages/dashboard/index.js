@@ -1,22 +1,10 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'umi'
-import { Row, Col, Card } from 'antd'
+import { Row, Col, Card, Spin } from 'antd'
 import { Color } from 'utils'
 import { Page, ScrollBar } from 'components'
-import {
-  NumberCard,
-  Quote,
-  Sales,
-  Weather,
-  RecentSales,
-  Comments,
-  Completed,
-  Browser,
-  Cpu,
-  User,
-  TopLateSoon,
-} from './components'
+import { NumberCard, TopLateSoon } from './components'
 import styles from './index.less'
 import store from 'store'
 
@@ -97,12 +85,19 @@ class Dashboard extends PureComponent {
       ))
 
     return (
-      <Page
-        // loading={loading.models.dashboard && sales.length === 0}
-        className={styles.dashboard}
-      >
+      <Page className={styles.dashboard}>
         <Row gutter={24}>
-          {numberCards}
+          {numberCards ? (
+            numberCards
+          ) : (
+            <Row
+              style={{ width: '100%', marginBottom: 10 }}
+              justify="center"
+              align="middle"
+            >
+              <Spin size="large" />
+            </Row>
+          )}
           <Col lg={24} md={24}>
             <Card bordered={false} {...bodyStyle}>
               <TopLateSoon data={list_late_soon} />

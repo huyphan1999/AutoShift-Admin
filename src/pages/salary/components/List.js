@@ -35,6 +35,7 @@ class List extends PureComponent {
         title: 'Tên',
         dataIndex: 'user_info',
         key: 'user_info',
+        width: 200,
         render: (user_info, record) => (
           <a to={`user/${record._id}`}>{user_info.name}</a>
         ),

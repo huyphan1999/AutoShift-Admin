@@ -72,8 +72,19 @@ class SalaryModal extends PureComponent {
               format={(value) => `Tháng ${value.format('MM/YYYY')}`}
             />
           </FormItem>
-          <Divider orientation="left">Giới hạn</Divider>
-          <Row>
+          <Divider orientation="left">Điều kiện tính lương</Divider>
+          <span
+            style={{
+              color: 'red',
+              padding: 20,
+            }}
+          >
+            <i>
+              Ca làm có thời gian đi trễ hoặc về sớm quá thời gian quy định sẽ
+              không đuọc tính lương
+            </i>
+          </span>
+          <Row gutter={20} style={{ marginTop: 15 }}>
             <Col span={12}>
               <FormItem
                 name="limit_late_in"
@@ -96,13 +107,24 @@ class SalaryModal extends PureComponent {
                 initialValue={0}
                 {...formItemLayout}
               >
-                <InputNumber min={0} defaultValue={0} />
+                <InputNumber min={0} />
               </FormItem>
             </Col>
           </Row>
 
           <Divider orientation="left">Trừ lương </Divider>
-          <Row gutter={20}>
+          <span
+            style={{
+              color: 'red',
+              padding: 20,
+            }}
+          >
+            <i>
+              Lương của nhân viên sẽ bị trừ số tiền tương ứng mỗi đơn vị thời
+              gian
+            </i>
+          </span>
+          <Row gutter={20} style={{ marginTop: 15 }}>
             <Col span={12}>
               <FormItem
                 name="minute_sub"
@@ -112,19 +134,24 @@ class SalaryModal extends PureComponent {
                 initialValue={0}
                 {...formItemLayout}
               >
-                <InputNumber defaultValue={0} />
+                <InputNumber />
               </FormItem>
             </Col>
             <Col span={12}>
               <FormItem
                 name="minute_sub_value"
                 rules={[{ required: true }]}
-                label={'Só tiên (VNĐ)'}
+                label={'Số tiên (VNĐ)'}
                 hasFeedback
                 initialValue={0}
                 {...formItemLayout}
               >
-                <InputNumber defaultValue={0} />
+                <InputNumber
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  }
+                  parser={(value) => value.replace(/\\s?|(,*)/g, '')}
+                />
               </FormItem>
             </Col>
           </Row>

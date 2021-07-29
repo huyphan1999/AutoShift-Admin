@@ -196,7 +196,13 @@ class UserModal extends PureComponent {
             hasFeedback
             {...formItemLayout}
           >
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              }
+              parser={(value) => value.replace(/\\s?|(,*)/g, '')}
+              style={{ width: '100%' }}
+            />
           </FormItem>
         </Form>
       </Modal>

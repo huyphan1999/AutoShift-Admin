@@ -11,6 +11,7 @@ import {
   Col,
   Space,
   Form,
+  message,
 } from 'antd'
 
 import { postRequest, getRequest } from 'services'
@@ -47,6 +48,8 @@ class Wificonfig extends PureComponent {
       })
       .then((res) => {
         this.setState({ loading: false })
+        message.success('Lưu thành công')
+        this.props.reload()
       })
       .catch((errorInfo) => {
         console.log(errorInfo)
